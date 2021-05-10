@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous"></script>
+
+    <title>Spring CRUD</title>
+</head>
+<body>
+<div class="table-content">
+    <table class="table table-borded table-responsive table-striped" id="table-editable">
+        <thead class="table-dark">
+        <tr>
+            <th>Id</th>
+            <th>FirstName</th>
+            <th>LastName</th>
+            <th>Email</th>
+            <th>Age</th>
+        </tr>
+        </thead>
+        <tr th:each="user : ${usersList}">
+            <td data-field="id" name="id" th:text="${user.getId()}">ID</td>
+            <td data-field="firstName" name="fname" th:text="${user.getFirstName()}">FirstName</td>
+            <td data-field="lastName" name="lname" th:text="${user.getLastName()}">LastName</td>
+            <td data-field="email" name="email" th:text="${user.getEmail()}">Email</td>
+            <td data-field="age" name="age" th:text="${user.getAge()}">Age</td>
+        </tr>
+    </table>
+    <b>Add New Members</b>
+    <table class="table table-borded table-responsive table-striped">
+        <thead class="table-dark">
+        <tr>
+            <th>FirstName</th>
+            <th>LastName</th>
+            <th>Email</th>
+            <th>Age</th>
+            <th colspan="2">Action</th>
+        </tr>
+        </thead>
+        <tr>
+            <form th:method="POST" th:action="@{/adduser}" th:object="${user}">
+                <td data-field="firstName"><input type="text" th:field="*{firstName}" id="firstName"/></td>
+                <td data-field="lastName"><input type="text" th:field="*{lastName}" id="lastName"/></td>
+                <td data-field="email"><input type="text" th:field="*{email}" id="email"></td>
+                <td data-field="age"><input type="text" th:field="*{age}" id="age" value=""/></td>
+                <td data-field="addBtn"><input type="submit" value="Add"/></td>
+                <td data-field="clnBtn"><input type="reset" value="Clean"/></td>
+            </form>
+        </tr>
+    </table>
+</div>
+
+<script src="/static/js/editable.js"></script>
+<script>
+    $("#table-editable").setEditable({
+        columnsEd: "1,2,3,4",
+        beforeDelete: function (row) {
+            $.get("/deluser", {
+                id: $(row).children("td:nth-child(1)").text()
+            })
+        },
+        afterEdit: function (row) {
+            var id = $(row).children('td[name="id"]').text();
+            var fname = $(row).children('td[name="fname"]').text();
+            var lname = $(row).children('td[name="lname"]').text();
+            var email = $(row).children('td[name="email"]').text();
+            var age = $(row).children('td[name="age"]').text();
+            $.post("/edituser", {
+                id: id,
+                firstName: fname,
+                lastName: lname,
+                email: email,
+                age: age
+            })
+        }
+    });
+</script>
+</body>
+</html>
