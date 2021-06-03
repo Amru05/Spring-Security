@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      lang="en">
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous"></script>
+    <meta charset="UTF-8">
+    <title>Edit user</title>
+</head>
+<body>
+
+<header th:insert="fragments/fragments.html :: top"></header>
+
+<table class="table table-borded table-responsive table-striped">
+    <thead class="table-dark">
+    <tr>
+        <th>Username</th>
+        <th>Password</th>
+        <th>Roles</th>
+        <th>Enable</th>
+        <th colspan="2">Action</th>
+    </tr>
+    </thead>
+    <tr>
+        <form th:action="@{/admin/edituser}"
+              th:method="POST"
+              th:object="${user}">
+            <input type="hidden" name="id" th:field="*{id}" value="*{id}">
+            <td data-field="username"><input type="text" id="username" th:field="*{username}"/></td>
+            <td data-field="password"><input type="password" id="password" th:field="*{password}"
+                                             placeholder="password"/></td>
+            <td>
+                <input type="checkbox"
+                       th:each="role : ${rolesList}"
+                       th:text="${role.roleName}"
+                       th:value="${role.roleName}"
+                       th:field="*{roles}"/>
+            </td>
+            <td data-field="enabled"><input type="checkbox" th:field="*{enabled}"/></td>
+            <td data-field="updBtn"><input type="submit" value="Update"/></td>
+        </form>
+    </tr>
+</table>
+
+<header th:insert="fragments/fragments.html :: bottom"></header>
+
+</body>
+</html>

@@ -55,8 +55,7 @@ public class HibernateConfig {
         entityManagerFactory.setDataSource(getDataSource());
         entityManagerFactory.setJpaProperties(props);
         entityManagerFactory.setJpaVendorAdapter(vendorAdapter);
-//        entityManagerFactory.setPackagesToScan(new String[]{"web/model"});
-        entityManagerFactory.setPackagesToScan("web");
+        entityManagerFactory.setPackagesToScan(new String[]{"web/model"});
 
         return entityManagerFactory;
     }
@@ -72,4 +71,5 @@ public class HibernateConfig {
     public PersistenceExceptionTranslationPostProcessor exceptionTranslation() {
         return new PersistenceExceptionTranslationPostProcessor();
     }
+
 }

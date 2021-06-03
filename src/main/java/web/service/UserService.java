@@ -1,12 +1,12 @@
 package web.service;
 
-import org.springframework.stereotype.Service;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import web.model.Role;
 import web.model.User;
 
 import java.util.List;
 
-@Service
-public interface UserService {
+public interface UserService extends UserDetailsService {
     List<User> getUsers();
 
     void addUser(User user);
@@ -16,4 +16,12 @@ public interface UserService {
     void editUser(User user);
 
     User getById(Long id);
+
+    User getByUsername(String username);
+
+    List<Role> getAllRoles();
+
+    Role getRoleByName(String name);
+
+    void initDB();
 }
